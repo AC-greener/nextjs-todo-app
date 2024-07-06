@@ -3,9 +3,9 @@ import App from '../components/Task'
 import {createTable, initializeData} from '../seed'
 (async () => {
   try {
-    // await createTable();
+    await createTable();
     // const insertedTasks = await initializeData();
-    // console.log('initialized successfully');
+    console.log('createTable successfully');
     // console.log('Inserted tasks:', insertedTasks.rows);
   } catch (error) {
     console.error('Database initialization failed', error);

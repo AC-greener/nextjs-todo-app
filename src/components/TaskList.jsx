@@ -12,7 +12,7 @@ export default function TaskList({ initialTasks = [] }) {
 
   const addTask = async () => {
     if (newTask.trim() !== "") {
-      const response = await fetch('/api', {
+      const response = await fetch('/task', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export default function TaskList({ initialTasks = [] }) {
 
   const toggleTaskCompletion = async (id) => {
     const task = tasks.find((task) => task.id === id);
-    const response = await fetch('/api', {
+    const response = await fetch('/task', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -46,7 +46,7 @@ export default function TaskList({ initialTasks = [] }) {
   
     console.log(`Deleting task with id: ${id}`);
   
-    const response = await fetch('/api', {
+    const response = await fetch('/task', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json'
