@@ -1,9 +1,10 @@
 // pages/index.js
 
-import { getTasks } from "../lib/db";
+import prisma from '../../lib/prisma';
+const tasks = await prisma.task.findMany();
+console.log(tasks, 'tasks');
 import TaskList from "./TaskList";
 export default async function Home() {
-  const tasks = await getTasks();
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background">
