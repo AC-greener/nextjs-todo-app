@@ -5,26 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import clsx from 'clsx';
 import { FileCheckIcon, TrashIcon } from './icon';
-
+import {serverAddTask} from './actions'
 export default function TaskList({ initialTasks = [] }) {
   const [tasks, setTasks] = useState(initialTasks);
   const [newTask, setNewTask] = useState("");
-
-  const addTask = async () => {
+  const handleAddTask = async () => {
     if (newTask.trim() !== "") {
-      const response = await fetch('/task', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ title: newTask })
-      });
-      const newTaskData = await response.json();
-      setTasks([...tasks, newTaskData]);
-      setNewTask("");
+      try {
+        const newTaskData = await serverAddTask(newTask);
+        setTasks((prevTasks) => [...prevTasks, newTaskData]);
+        setNewTask("");
+      } catch (error) {
+        console.error('Failed to add task:', error);
+      }
     }
-  };
-
+  }
   const toggleTaskCompletion = async (id) => {
     const task = tasks.find((task) => task.id === id);
     const response = await fetch('/task', {
@@ -70,7 +65,7 @@ export default function TaskList({ initialTasks = [] }) {
           onChange={(e) => setNewTask(e.target.value)}
           className="flex-1"
         />
-        <Button onClick={addTask}>Add</Button>
+        <Button onClick={() => handleAddTask(newTask)}>Add</Button>
       </div>
       <div className="space-y-2">
         {tasks.map((task) => (
