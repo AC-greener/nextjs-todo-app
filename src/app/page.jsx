@@ -1,22 +1,17 @@
+import App from "../components/Task";
+// import { auth } from "/auth.js"
+import Header from "@/components/Header";
+import { SessionProvider } from "next-auth/react";
 
-import App from '../components/Task'
-
-// import {createTable, initializeData} from '../seed'
-// (async () => {
-//   try {
-//     await createTable();
-//     // const insertedTasks = await initializeData();
-//     console.log('createTable successfully');
-//     // console.log('Inserted tasks:', insertedTasks.rows);
-//   } catch (error) {
-//     console.error('Database initialization failed', error);
-//   }
-// })();
-
-export default function Home() {
+export default async function Home({ children, session }) {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <App/>
-    </main>
+    <SessionProvider session={session}>
+      <main className="flex min-h-screen flex-col items-center justify-between">
+        {/* <p>Welcome {session?.user.name}!</p> */}
+        <Header />
+        <App />
+        {children}
+      </main>
+    </SessionProvider>
   );
 }
