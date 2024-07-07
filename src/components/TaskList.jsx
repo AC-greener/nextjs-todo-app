@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -8,6 +8,9 @@ import { FileCheckIcon, TrashIcon } from "./icon";
 import { serverAddTask, serverDeleteTask, serverUpdateTask } from "./actions";
 export default function TaskList({ initialTasks = [] }) {
   const [newTask, setNewTask] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const [isPending2, startTransition2] = useTransition();
+
   const handleAddTask = async () => {
     if (newTask.trim() !== "") {
       try {
@@ -44,7 +47,12 @@ export default function TaskList({ initialTasks = [] }) {
           onChange={(e) => setNewTask(e.target.value)}
           className="flex-1"
         />
-        <Button onClick={() => handleAddTask(newTask)}>Add</Button>
+        <Button
+          disabled={isPending2}
+          onClick={() => startTransition2(() => handleAddTask(newTask))}
+        >
+          Add
+        </Button>
       </div>
       <div className="space-y-2">
         {initialTasks.map((task) => (
@@ -58,6 +66,7 @@ export default function TaskList({ initialTasks = [] }) {
                 onCheckedChange={() =>
                   toggleTaskCompletion(task.id, !task.completed)
                 }
+                disabled={isPending}
               />
               <span
                 className={clsx("text-sm", {
@@ -71,14 +80,20 @@ export default function TaskList({ initialTasks = [] }) {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => toggleTaskCompletion(task.id, !task.completed)}
+                disabled={isPending}
+                onClick={() =>
+                  startTransition(() =>
+                    toggleTaskCompletion(task.id, !task.completed)
+                  )
+                }
               >
                 <FileCheckIcon className="h-4 w-4" />
               </Button>
               <Button
                 variant="destructive"
                 size="icon"
-                onClick={() => deleteTask(task.id)}
+                disabled={isPending}
+                onClick={() => startTransition(() => deleteTask(task.id))}
               >
                 <TrashIcon className="h-4 w-4" />
               </Button>
