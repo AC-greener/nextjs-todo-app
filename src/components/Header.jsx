@@ -43,7 +43,7 @@ const Header = () => {
     left = (
       <div className="left">
         <Link href="/">
-            Feed
+            Feed1
         </Link>
         <style jsx>{`
           .bold {
