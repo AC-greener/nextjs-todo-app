@@ -9,7 +9,7 @@ const Header = () => {
   const isActive = (pathname) => router.pathname === pathname;
 
   const { data: session, status } = useSession();
-  console.log("session", session);
+  // console.log("session", session);
   let left = (
     <div className="left">
       <Link href="/">
